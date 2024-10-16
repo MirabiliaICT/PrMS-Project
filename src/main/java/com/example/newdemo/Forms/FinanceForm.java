@@ -24,7 +24,7 @@ public class FinanceForm extends FormLayout{
     public ComboBox<Users> owner = new ComboBox<>("Owner");
     public ComboBox<State> state = new ComboBox<>("State");
     public ComboBox<City> city = new ComboBox<>("City");
-    public ComboBox<Phrases> phrase = new ComboBox<>("Phrases");
+    public ComboBox<Phase> phrase = new ComboBox<>("Phrases");
     public ComboBox<Property.PropertyType> type = new ComboBox<>("Property Type");
     public NumberField amountPaid = new NumberField("Amount Paid");
     public TextField paidBy = new TextField("Paid By");
@@ -35,7 +35,7 @@ public class FinanceForm extends FormLayout{
     @Autowired
     PropertyService propertyService;
 
-    public FinanceForm(List<Users> users, List<State> states, List<City> cities, List<Phrases> phrases){
+    public FinanceForm(List<Users> users, List<State> states, List<City> cities, List<Phase> phrases){
 
         state.setItems(states);
         state.setItemLabelGenerator(State::getName);
@@ -44,7 +44,7 @@ public class FinanceForm extends FormLayout{
         city.setItemLabelGenerator(City::getName);
 
         phrase.setItems(phrases);
-        phrase.setItemLabelGenerator(Phrases::getName);
+        phrase.setItemLabelGenerator(Phase::getName);
 
         owner.setItems(users);
         owner.setItemLabelGenerator(Users::toString);

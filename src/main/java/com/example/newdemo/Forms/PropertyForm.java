@@ -31,7 +31,7 @@ public class PropertyForm extends FormLayout {
     public ComboBox<Users> owners = new ComboBox<>("Owner");
     public TextField street = new TextField("Street");
     public ComboBox<Property.PropertyType> type = new ComboBox<>("Property Type");
-    public ComboBox<Phrases> phrase = new ComboBox<>("Phrase");
+    public ComboBox<Phase> phrase = new ComboBox<>("Phrase");
     public IntegerField lotSize = new IntegerField("Lot Size");
     public IntegerField noOfBedrooms = new IntegerField("No of Bedrooms");
     public IntegerField noOfBathrooms = new IntegerField("No of Bathrooms");
@@ -48,7 +48,7 @@ public class PropertyForm extends FormLayout {
     Button cancel = new Button("Discharge Changes");
 
     public PropertyForm(List<State> states, List<City> cities,
-                        List<Users> users, List<Phrases> phrases){
+                        List<Users> users, List<Phase> phrases){
 
         state.setItems(states);
         state.setItemLabelGenerator(State::getName);
@@ -57,7 +57,7 @@ public class PropertyForm extends FormLayout {
         city.setItemLabelGenerator(City::getName);
 
         phrase.setItems(phrases);
-        phrase.setItemLabelGenerator(Phrases::getName);
+        phrase.setItemLabelGenerator(Phase::getName);
 
         owners.setItems(users);
         owners.setItemLabelGenerator(Users::toString);

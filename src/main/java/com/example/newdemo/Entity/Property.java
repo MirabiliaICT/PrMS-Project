@@ -69,7 +69,7 @@ public class Property {
 
 //    @NotNull
     @ManyToOne
-    private Phrases phrases;
+    private Phase phrases;
 
     @Column(nullable = false)
     private String street;
@@ -109,7 +109,7 @@ public class Property {
 
     public Property() {}
 
-    public Property(Long id, State state, City city, Phrases phrases, String street,
+    public Property(Long id, State state, City city, Phase phrases, String street,
                     PropertyType type, int lotSize, double price, PropertyStatus status,
                     String description, List<PropertyImage> propertyImages) {
         this.id = id;
@@ -125,7 +125,7 @@ public class Property {
         this.propertyImages = propertyImages;
     }
 
-    public Property(Long id, State state, City city, Phrases phrases, String street,
+    public Property(Long id, State state, City city, Phase phrases, String street,
                     PropertyType type, int lotSize, double price, PropertyStatus status,
                     Users owners, String description, List<PropertyImage> propertyImages) {
         this.id = id;
@@ -142,7 +142,7 @@ public class Property {
         this.propertyImages = propertyImages;
     }
 
-    public Property(Long id, State state, City city, Phrases phrases, String street,
+    public Property(Long id, State state, City city, Phase phrases, String street,
                     PropertyType type, int lotSize, int noOfBedrooms,
                     int noOfBathrooms, double price, PropertyStatus status,
                     Set<PropertyServices> services, Set<PropertyFeatures> features,
@@ -164,9 +164,9 @@ public class Property {
         this.propertyImages = propertyImages;
     }
 
-    public Property(Long id, State state, City city, Phrases phrases, String street,
+    public Property(Long id, State state, City city, Phase phrases, String street,
                     Property.PropertyType type, int lotSize, int noOfBedrooms,
-                    int noOfBathrooms,double price, Property.PropertyStatus status,
+                    int noOfBathrooms, double price, Property.PropertyStatus status,
                     Set<Property.PropertyServices> services, Set<Property.PropertyFeatures> features,
                     Users owners, String description, List<PropertyImage> propertyImages) {
         this.id = id;
@@ -199,7 +199,7 @@ public class Property {
         this.city = city;
     }
 
-    public void setPhrases(Phrases phrases) {this.phrases = phrases;}
+    public void setPhrases(Phase phrases) {this.phrases = phrases;}
 
     public void setStreet(String street) {
         this.street = street;

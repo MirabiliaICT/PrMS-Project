@@ -49,7 +49,7 @@ public class FinanceService {
         return wholeList;
     }
 
-    public Finances getLastRecordForUser(Users user, State state, City city, Phrases phrase, Property.PropertyType type) {
+    public Finances getLastRecordForUser(Users user, State state, City city, Phase phrase, Property.PropertyType type) {
         return financeRepository.findFirstByOwnerAndStateAndCityAndPhrasesAndTypeOrderByDateTimeDesc(user, state, city, phrase, type);
     }
 

@@ -5,14 +5,12 @@ import com.example.newdemo.Entity.*;
 import com.example.newdemo.Forms.FinanceForm;
 import com.example.newdemo.Service.*;
 import com.example.newdemo.View.MainView;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -21,10 +19,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -39,18 +35,18 @@ public class FinancesView extends VerticalLayout implements RouterLayout {
     FinanceService financeService;
     StateService stateService;
     CityService cityService;
-    PhraseService phraseService;
+    PhaseService phraseService;
     Dialog newFormDialog = new Dialog();
     Users selectedUser;
     State selectedState;
     City selectedCity;
-    Phrases selectedPhrases;
+    Phase selectedPhrases;
     Property.PropertyType selectedType;
     Double price;
 
     @Autowired
     public FinancesView(UserService userService, FinanceService financeService, PropertyService propertyService,
-                        StateService stateService, CityService cityService, PhraseService phraseService){
+                        StateService stateService, CityService cityService, PhaseService phraseService){
         this.userService = userService;
         this.financeService = financeService;
         this.propertyService = propertyService;
@@ -59,7 +55,7 @@ public class FinancesView extends VerticalLayout implements RouterLayout {
         this.phraseService = phraseService;
 
         newForm = new FinanceForm(userService.findUserNamesByClientUserRole(), stateService.getAllStates(), cityService.getAllCities(),
-                phraseService.getAllPhrases());
+                phraseService.getAllPhases());
         newForm.setFinances(new Finances());
 
         newFormDialog.add(newForm);
@@ -133,7 +129,7 @@ public class FinancesView extends VerticalLayout implements RouterLayout {
             recordGrid.addClassName("grid");
         }
 
-        private void getPropertyTypeForUser(Users user, State state, City city, Phrases phrases){
+        private void getPropertyTypeForUser(Users user, State state, City city, Phase phrases){
            List<Property.PropertyType> typeByUser = propertyService.findAllPropertyTypesForUser(user, state, city, phrases);
            newForm.type.setItems(typeByUser);
         }
@@ -147,7 +143,7 @@ public class FinancesView extends VerticalLayout implements RouterLayout {
         }
 
         private void getPhraseFOrUser(Users user){
-        List<Phrases> phrasesList = phraseService.findAllPhrasesOfPropertyByUser(user);
+        List<Phase> phrasesList = phraseService.findAllPhasesOfPropertyByUser(user);
         }
 
         private double getPriceThroughUser(Users user, Property.PropertyType type){
@@ -226,10 +222,10 @@ public class FinancesView extends VerticalLayout implements RouterLayout {
                 .toList();
     }
 
-    private List<Phrases> sortedPhrase(){
-        List<Phrases> phrases = phraseService.getAllPhrases();
+    private List<Phase> sortedPhrase(){
+        List<Phase> phrases = phraseService.getAllPhases();
         return phrases.stream()
-                .sorted(Comparator.comparing(Phrases::getName))
+                .sorted(Comparator.comparing(Phase::getName))
                 .toList();
     }
 

@@ -1,0 +1,133 @@
+/* General Styles */
+
+
+/* Button Style */
+.custom-add-button{
+    color: #FFFFFF;
+    background-color: #34A853;
+}
+
+vaadin-button.custom-save-button{
+    color: #FFFFFF;
+    background-color: #162868;
+}
+
+vaadin-button.custom-discard-button{
+    color: #FF1400;
+    background-color: #EDEDED;
+}
+
+vaadin-button.custom-delete-button{
+    color: #FFFFFF;
+    background-color: #FF1400;
+}
+
+vaadin-button.custom-reset-button{
+    color: #FFFFFF;
+    background-color: #F4A74B;
+}
+
+/* Grid Styles */
+.custom-grid {
+    --lumo-border-radius: 10px;
+    --lumo-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    --lumo-font-size-m: 14px;
+    --lumo-base-color: #ffffff;
+}
+
+.custom-grid::part(header-cell) {
+    font-weight: bold;
+    color: black;
+    font-size: 16px;
+    text-align: left;
+    border-bottom: 1px solid black;
+}
+
+.custom-grid::part(selected-row-cell) {
+    background: #737da5;
+    color: white;
+}
+
+/* Button Style */
+.custom-add-button{
+    margin-top: 38px;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #34A853;
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.custom-save-button{
+    color: #FFFFFF;
+    background-color: #162868;
+}
+
+.custom-discard-button{
+    color: #FF1400;
+    background-color: #EDEDED;
+}
+
+.custom-delete-button{
+    color: #FFFFFF;
+    background-color: #FF1400;
+}
+
+.custom-reset-button{
+        margin-top: 36px;
+        background-color: #F4A74B;
+        color: white;
+        cursor: pointer;
+
+}
+
+
+/* Drawer Styles */
+.custom-drawer-toggle {
+    color: #162868 !important;
+}
+
+.custom-drawer-toggle:hover {
+    background-color: #e6f0fe !important;
+}
+
+
+/* Filter Text Field */
+.custom-filter-text{
+    margin-top: 34px;
+}
+
+/* Custom Dialog */
+
+.custom-dialog{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    color: black;
+    font-weight: 300 !important;
+    width: 35rem;
+}
+
+.spacer {
+    width: 8rem;
+}
+
+.custom-dialog::part(title){
+    padding-left: var(--lumo-space-m);
+}
+
+
+.custom-dialog::part(footer){
+    padding: 10px 40px;
+}
+
+.custom-dialog::part(overlay){
+    width: 35rem;
+}
+
+.phase-view, .state-view, .city-view{
+    padding: 0;
+}
+
+.buttons-layout{
+    padding: 10px 0 0 10px;
+}

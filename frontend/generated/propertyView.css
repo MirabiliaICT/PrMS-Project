@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
-
+/*
 .add-property, .reset-filters{
    font-family: 'Open Sans', sans-serif;
    margin-top: 35px;
@@ -8,11 +8,12 @@
    font-weight: 500;
    font-size: 14px;
 }
+*/
 
 .save{
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
-    background-color: #1434A4 !important;
+    background-color: #162967 !important;
     color: white !important;
     margin-top:10px;
 }

@@ -20,6 +20,7 @@ public class MainView extends AppLayout {
     Image image = new Image();
     public MainView(){
         DrawerToggle toggle = new DrawerToggle();
+        toggle.addClassName("custom-drawer-toggle");
 
         SideNav nav = new SideNav();
 
@@ -30,13 +31,12 @@ public class MainView extends AppLayout {
         image.getStyle().setHeight("80%").setWidth("80%");
 
         imageLayout.add(image);
-        imageLayout.getStyle().set("background-color", "#1434A4").set("color", "white");
+        imageLayout.getStyle().set("background-color", "#162967").set("color", "white");
 
 
         SideNavItem dashboard = new SideNavItem("Dashboard", Dashboard.class, VaadinIcon.DASHBOARD.create());
         SideNavItem location = new SideNavItem("Location", StateView.class, VaadinIcon.LOCATION_ARROW.create());
         SideNavItem property = new SideNavItem("Properties", PropertyView.class, VaadinIcon.WORKPLACE.create());
-
         SideNavItem users = new SideNavItem("Users", ClientView.class, VaadinIcon.USERS.create());
         SideNavItem finances = new SideNavItem("Finances", FinancesView.class, VaadinIcon.BAR_CHART.create());
 

@@ -22,7 +22,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
                                                  @Param("type") Property.PropertyType type,
                                                  @Param("state") State state,
                                                  @Param("city") City city,
-                                                 @Param("phrases") Phrases phrase);
+                                                 @Param("phrases") Phase phrase);
 
     @Query("SELECT p FROM Property p WHERE p.type = :propertyType AND p.type = 'Land'")
     List<Property> findLandPropertiesByType(@Param("propertyType") Property.PropertyType propertyType);
@@ -38,7 +38,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     List<Property.PropertyType> findAllPropertyTypesByUser(@Param("owners") Users user,
                                                            @Param("state") State state,
                                                            @Param("city") City city,
-                                                           @Param("phrases") Phrases phrase);
+                                                           @Param("phrases") Phase phrase);
 
 
     @Query("SELECT p.state FROM Property  p WHERE p.owners = :owners")
@@ -48,7 +48,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     List<City> findAllCityByUser(@Param("owners") Users user);
 
     @Query("SELECT p.phrases FROM Property p WHERE p.owners = :owners")
-    List<Phrases> findAllPhrasesByUser(@Param("owners") Users user);
+    List<Phase> findAllPhrasesByUser(@Param("owners") Users user);
 
     @Query("SELECT p.price FROM Property p " + "WHERE p.owners = :owners AND p.type = :type")
     Double findPropertyPriceByUserAndType(@Param("owners") Users user, @Param("type") Property.PropertyType propertyType);

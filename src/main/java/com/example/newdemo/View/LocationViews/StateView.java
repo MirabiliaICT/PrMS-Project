@@ -20,6 +20,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.theme.Theme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Comparator;
@@ -49,6 +50,8 @@ public class StateView extends VerticalLayout {
         setSizeFull();
         configureGrid();
 
+        addClassName("state-view");
+
         newStateForm.setState(new State());
         newStateForm.delete.setVisible(false);
 
@@ -56,21 +59,21 @@ public class StateView extends VerticalLayout {
         newStateForm.addCloseListener(e -> closeNew());
 
         newStateDialog.setHeaderTitle("New State");
-        newStateDialog.addClassName("titles");
+        newStateDialog.addClassName("custom-dialog");;
 
         newStateDialog.getFooter().add(newStateForm.buttonLayout());
         newStateDialog.add(newStateForm);
 
         Tab state = new Tab(new RouterLink("State", StateView.class));
         Tab city = new Tab(new RouterLink("City", CityView.class));
-        Tab phrase = new Tab(new RouterLink("Phrase", PhraseView.class));
+        Tab phase = new Tab(new RouterLink("Phase", PhaseView.class));
 
         state.addClassName("location-items");
         city.addClassName("location-items");
-        phrase.addClassName("location-items");
+        phase.addClassName("location-items");
 
 
-        Tabs locationTabs = new Tabs(state, city, phrase);
+        Tabs locationTabs = new Tabs(state, city, phase);
         locationTabs.addClassName("location-tabs");
 
         locationTabs.setSelectedTab(state);
@@ -136,20 +139,16 @@ public class StateView extends VerticalLayout {
 
 
     private void configureGrid() {
-      List<State> states = service.getAllStatesByFilter(filterText.getEmptyValue());
-        List<State> sortedStates = states.stream()
-                .sorted(Comparator.comparing(State::getName))
-                .collect(Collectors.toList());
-
-        stateGrid.setItems(sortedStates);
-        stateGrid.setColumns("name", "stateId");
-        stateGrid.getColumns().forEach(col -> col.setAutoWidth(true));
-        stateGrid.addItemClickListener(event -> edit(event.getItem()));
+        List<State> states = service.getAllStatesByFilter(filterText.getEmptyValue());
+        stateGrid.setItems(states);
+        stateGrid.addColumn(State::getName).setHeader("State Name").setSortable(true);
+        stateGrid.addColumn(State::getStateId).setHeader("State Id").setSortable(true);
         stateGrid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         stateGrid.addItemClickListener(event -> edit(event.getItem()));
-        stateGrid.addClassName("grid");
+        stateGrid.addClassName("custom-grid");
     }
+
 
 
     private void edit(State state){
@@ -168,7 +167,7 @@ public class StateView extends VerticalLayout {
             editStateForm.addCloseListener(e -> closeEdit());
 
             editDialog.setHeaderTitle("State");
-            editDialog.addClassName("titles");
+            editDialog.addClassName("custom-dialog");;
             editDialog.getFooter().add(editStateForm.buttonLayout());
             editDialog.add(editStateForm);
             editDialog.open();
@@ -210,17 +209,22 @@ public class StateView extends VerticalLayout {
     }
 
     private HorizontalLayout getToolbar() {
-        Icon searchIcon = new Icon(VaadinIcon.SEARCH);
         filterText.setPlaceholder("Search");
         filterText.setClearButtonVisible(true);
-        filterText.setSuffixComponent(searchIcon);
+        filterText.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
+        filterText.addClassName("custom-filter-text");
 
         Button addState = new Button("Add State", clickEvent -> newStateDialog.open());
-        addState.addClassName("add-state-button");
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addState);
-        return toolbar;
+        addState.setPrefixComponent(new Icon(VaadinIcon.PLUS));
+        addState.addClassName("custom-add-button");
+
+        HorizontalLayout horizontalLayout =new HorizontalLayout(addState, filterText);
+        horizontalLayout.addClassName("buttons-layout");
+
+        return horizontalLayout ;
+
     }
 
 

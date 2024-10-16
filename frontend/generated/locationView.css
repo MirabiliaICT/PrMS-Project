@@ -2,10 +2,11 @@
 
 
 .location-navbar{
-    background-color: #8C8C8C;
+    background-color: #162967;
     width: 120%;
     margin-top:-20px;
     margin-left:-20px;
+    padding: 10px 0 0 10px;
 }
 
 .location-items{
@@ -18,16 +19,16 @@
 
 
 .location-items[selected] {
-  color: orange;
+  color: white;
 }
 
 .location-tabs .location-items::after{
-   background-color: orange !important;
+   background-color: white !important;
    opacity: 100;
    box-shadow: none !important;
 
 }
-
+/*
 .add-state-button{
     font-family: 'Open Sans', sans-serif;
     margin-top: 3px;
@@ -46,6 +47,8 @@
     font-weight: 500;
     font-size: 14px;
 }
+*/
+
 
 .grid::part(header-cell){
     font-family: 'Open Sans',  sans-serif;
@@ -74,7 +77,7 @@
 .save-button{
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
-    background-color: #1434A4 !important;
+    background-color: #162967 !important;
     color: white !important;
     margin-top: 5px;
     margin-left: auto;
@@ -97,9 +100,3 @@
      margin-left:auto
 }
 
-.titles{
-    font-family: 'Open Sans', sans-serif;
-    font-size: 18px;
-    color: black;
-    font-weight: 300 !important;
-}

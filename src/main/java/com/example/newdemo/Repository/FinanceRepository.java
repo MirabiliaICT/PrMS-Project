@@ -17,7 +17,7 @@ public interface FinanceRepository extends JpaRepository<Finances, Long> {
     List<Finances> searchByUserToString(@Param("searchTerm") String filter);
 
     Finances findFirstByOwnerAndStateAndCityAndPhrasesAndTypeOrderByDateTimeDesc(
-            Users owner, State state, City city, Phrases phrase, Property.PropertyType type);
+            Users owner, State state, City city, Phase phrase, Property.PropertyType type);
 
     @Query("SELECT SUM(f.amountPaid) FROM Finances f")
     Double getTotalAmountPaid();

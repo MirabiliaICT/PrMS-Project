@@ -1,5 +1,6 @@
 package com.example.newdemo.View.LocationViews;
 
+import com.example.newdemo.Entity.Phase;
 import com.example.newdemo.Entity.State;
 import com.example.newdemo.Forms.CityForm;
 import com.example.newdemo.Repository.CityRepository;
@@ -8,6 +9,7 @@ import com.example.newdemo.Service.StateService;
 import com.example.newdemo.Entity.City;
 import com.example.newdemo.View.MainView;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -40,6 +42,10 @@ public class CityView extends VerticalLayout {
     Dialog newFormDialog = new Dialog();
     Dialog editDialog = new Dialog();
     City originalCity;
+    ComboBox<State> stateComboBox = new ComboBox<>("State");
+    Icon reloadIcon = VaadinIcon.REFRESH.create();
+    Button resetFilterButton = new Button(reloadIcon);
+
     @Autowired
     CityRepository cityRepository;
 
@@ -47,6 +53,7 @@ public class CityView extends VerticalLayout {
     public CityView(CityService cityService, StateService stateService){
         this.cityService = cityService;
         this.stateService = stateService;
+        addClassName("state-view");
 
         cityForm = new CityForm(stateService.getAllStates());
 
@@ -62,14 +69,14 @@ public class CityView extends VerticalLayout {
         newForm.addCloseListener(e -> closeNew());
 
         newFormDialog.setHeaderTitle("New City");
-        newFormDialog.addClassName("titles");
+        newFormDialog.addClassName("custom-dialog");;
 
         newFormDialog.getFooter().add(newForm.buttonLayout());
         newFormDialog.add(newForm);
 
         Tab state = new Tab(new RouterLink("State", StateView.class));
         Tab city = new Tab(new RouterLink("City", CityView.class));
-        Tab phrase = new Tab(new RouterLink("Phrase", PhraseView.class));
+        Tab phrase = new Tab(new RouterLink("Phase", PhaseView.class));
 
         state.addClassName("location-items");
         city.addClassName("location-items");
@@ -139,7 +146,7 @@ public class CityView extends VerticalLayout {
             cityForm.addCloseListener(e -> closeEdit());
 
             editDialog.setHeaderTitle("City");
-            editDialog.addClassName("titles");
+            editDialog.addClassName("custom-dialog");;
             editDialog.getFooter().add(cityForm.buttonLayout());
             editDialog.add(cityForm);
             editDialog.open();
@@ -178,7 +185,6 @@ public class CityView extends VerticalLayout {
         editDialog.close();
     }
 
-
     private void updateList() {
         if(filterText.isEmpty()) {
             List<City> cities = cityService.getAllCitiesByFilter(filterText.getEmptyValue());
@@ -198,31 +204,70 @@ public class CityView extends VerticalLayout {
             cityGrid.setItems(sortedCities);
         }
     }
-        private HorizontalLayout getToolbar() {
+    private HorizontalLayout getToolbar() {
         filterText.setPlaceholder("Search");
         filterText.setClearButtonVisible(true);
-        filterText.setSuffixComponent(new Icon(VaadinIcon.SEARCH));
+        filterText.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
+        filterText.addClassName("custom-filter-text");
 
-        Button addCity  = new Button("Add City", e -> newFormDialog.open());
-        addCity.addClassName("add-city-button");
+            Button addCity  = new Button("Add City", e -> newFormDialog.open());
+            addCity.setPrefixComponent(new Icon(VaadinIcon.PLUS));
+            addCity.addClassName("custom-add-button");
 
-            return new HorizontalLayout(filterText, addCity);
+            stateComboBox.setItems(stateService.getAllStates());
+            stateComboBox.setItemLabelGenerator(State::getName);
+            stateComboBox.addValueChangeListener((e)->{
+                performSearch();
+            });
+
+
+            resetFilterButton.addClickListener(clickEvent -> {
+                stateComboBox.clear();
+                updateList();
+            });
+
+            resetFilterButton.addClassName("custom-reset-button");
+
+            HorizontalLayout horizontalLayout = new HorizontalLayout(addCity, filterText, stateComboBox, resetFilterButton);
+            horizontalLayout.addClassName("buttons-layout");
+
+            return horizontalLayout;
+    }
+
+    private void performSearch() {
+        State selectedState = stateComboBox.getValue();
+
+        List<City> searchResults = List.copyOf(cityService.getAllCitiesByState(selectedState));
+        List<City> sortedCities = searchResults.stream()
+                .sorted(Comparator.comparing(City::getName))
+                .toList();
+        cityGrid.setItems(sortedCities);
     }
 
     private void configureGrid() {
-        cityGrid.addColumn(city -> city.getState().getName()).setHeader("State");
-        cityGrid.addColumn(City::getName).setHeader("City");
-        cityGrid.addColumn(City::getCityId).setHeader("City Id");
+
+        cityGrid.addColumn(city -> city.getState().getName())
+                .setHeader("State")
+                .setSortable(true);
+
+        cityGrid.addColumn(City::getName)
+                .setHeader("City")
+                .setSortable(true);
+
+        cityGrid.addColumn(City::getCityId)
+                .setHeader("City Id")
+                .setSortable(true);
+
         cityGrid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-        List<City> city = cityService.getAllCitiesByFilter(filterText.getEmptyValue());
-        List<City> sortedCities = city.stream()
-                        .sorted(Comparator.comparing(City::getName))
-                        .toList();
-        cityGrid.setItems(sortedCities);
+        List<City> cities = cityService.getAllCitiesByFilter(filterText.getEmptyValue());
+        cityGrid.setItems(cities);
+
         cityGrid.addItemClickListener(event -> editForm(event.getItem()));
-        cityGrid.addClassName("grid");
+        cityGrid.addClassName("custom-grid");
+
     }
+
 }

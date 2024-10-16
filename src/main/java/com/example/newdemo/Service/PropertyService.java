@@ -1,13 +1,11 @@
 package com.example.newdemo.Service;
 
 import com.example.newdemo.Entity.*;
-import com.example.newdemo.Repository.ImageRepository;
 import com.example.newdemo.Repository.PropertyRepository;
 import com.example.newdemo.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PropertyService {
@@ -54,7 +52,7 @@ public class PropertyService {
         return propertyRepository.findAll();
     }
 
-    public List<Property.PropertyType> findAllPropertyTypesForUser(Users user, State state, City city, Phrases phrases) {
+    public List<Property.PropertyType> findAllPropertyTypesForUser(Users user, State state, City city, Phase phrases) {
         return propertyRepository.findAllPropertyTypesByUser(user, state, city, phrases);
     }
 

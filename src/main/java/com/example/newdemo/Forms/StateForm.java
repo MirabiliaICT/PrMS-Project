@@ -7,7 +7,10 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
@@ -21,7 +24,7 @@ public class StateForm extends FormLayout {
 
     Button save = new Button("Save");
     public Button delete = new Button("Delete");
-    Button cancel = new Button("Discharge Changes");
+    Button cancel = new Button("Discard Changes");
 
     Binder<State> stateBinder = new Binder<>(State.class);
     public StateForm(){
@@ -31,23 +34,40 @@ public class StateForm extends FormLayout {
         stateForm.setResponsiveSteps( new ResponsiveStep("0", 2));
         add(stateForm);
 
+        VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.setSizeFull();
+        mainLayout.add(stateForm);
+        mainLayout.addClassName("city-main-layout");
+        add(mainLayout);
+        save.addClassName("phase-save");
+
     }
 
     public HorizontalLayout buttonLayout(){
         save.addClickShortcut(Key.ENTER);
         cancel.addClickShortcut(Key.ESCAPE);
 
-        save.addClassName("save-button");
-        delete.addClassName("delete-button");
-        cancel.addClassName("cancel-button");
+        save.addClassName("custom-save-button");
+        delete.addClassName("custom-delete-button");
+        cancel.addClassName("custom-discard-button");
 
         save.addClickListener(clickEvent -> validateAndSave());
-        delete.addClickListener(clickEvent -> fireEvent(new DeleteEvent(this, stateBinder.getBean())));
-        cancel.addClickListener(clickEvent -> fireEvent(new CloseEvent(this)));
+        delete.addClickListener(clickEvent -> fireEvent(new StateForm.DeleteEvent(this, stateBinder.getBean())));
+        cancel.addClickListener(clickEvent -> fireEvent(new StateForm.CloseEvent(this)));
 
-        stateBinder.addStatusChangeListener(event -> save.setEnabled(stateBinder.isValid()));
 
-        return new HorizontalLayout(cancel, delete, save);
+        HorizontalLayout layout = new HorizontalLayout();
+
+        layout.add(cancel);
+
+        layout.setJustifyContentMode(FlexComponent.JustifyContentMode.START);
+
+        HorizontalLayout newHorizontalLayout =  new HorizontalLayout(layout, save, delete);
+        newHorizontalLayout.setWidthFull();
+        newHorizontalLayout.setFlexGrow(2, layout);
+
+
+        return newHorizontalLayout;
     }
 
     public void setState(State state){
