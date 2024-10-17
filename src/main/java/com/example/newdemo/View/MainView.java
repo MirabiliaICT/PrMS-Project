@@ -1,6 +1,7 @@
 package com.example.newdemo.View;
 
 import com.example.newdemo.View.FinanceViews.FinancesView;
+import com.example.newdemo.View.LocationViews.LocationView;
 import com.example.newdemo.View.LocationViews.StateView;
 import com.example.newdemo.View.PropertyViews.PropertyView;
 import com.example.newdemo.View.UserViews.ClientView;
@@ -35,7 +36,7 @@ public class MainView extends AppLayout {
 
 
         SideNavItem dashboard = new SideNavItem("Dashboard", Dashboard.class, VaadinIcon.DASHBOARD.create());
-        SideNavItem location = new SideNavItem("Location", StateView.class, VaadinIcon.LOCATION_ARROW.create());
+        SideNavItem location = new SideNavItem("Location", LocationView.class, VaadinIcon.LOCATION_ARROW.create());
         SideNavItem property = new SideNavItem("Properties", PropertyView.class, VaadinIcon.WORKPLACE.create());
         SideNavItem users = new SideNavItem("Users", ClientView.class, VaadinIcon.USERS.create());
         SideNavItem finances = new SideNavItem("Finances", FinancesView.class, VaadinIcon.BAR_CHART.create());
