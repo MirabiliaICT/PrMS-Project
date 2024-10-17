@@ -18,6 +18,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -84,32 +85,30 @@ public class PhaseView extends VerticalLayout {
         newFormDialog.getFooter().add(phaseNewForm.buttonLayout());
         newFormDialog.add(phaseNewForm);
 
-        HorizontalLayout display = getHorizontalLayout();
+//        HorizontalLayout display = getHorizontalLayout();
 
         setSizeFull();
         configureGrid();
         getToolbar();
-        add(display, getToolbar(), phasesGrid);
+        add(getToolbar(), phasesGrid);
         updateList();
     }
 
-    private static HorizontalLayout getHorizontalLayout() {
-        Tab state = new Tab(new RouterLink("State", StateView.class));
-        Tab city = new Tab(new RouterLink("City", CityView.class));
-        Tab phrase = new Tab(new RouterLink("Phase", PhaseView.class));
+//    private static HorizontalLayout getHorizontalLayout() {
+//        Tab state = new Tab(new RouterLink("State", StateView.class));
+//        Tab city = new Tab(new RouterLink("City", CityView.class));
+//        Tab phrase = new Tab(new RouterLink("Phase", PhaseView.class));
+//
 
-        state.addClassName("location-items");
-        city.addClassName("location-items");
-        phrase.addClassName("location-items");
-
-        Tabs locationTabs = new Tabs(state, city, phrase);
-        locationTabs.addClassName("location-tabs");
-
-        locationTabs.setSelectedTab(phrase);
-        HorizontalLayout display = new HorizontalLayout(locationTabs);
-        display.addClassName("location-navbar");
-        return display;
-    }
+//
+//        Tabs locationTabs = new Tabs(state, city, phrase);
+//        locationTabs.addClassName("location-tabs");
+//
+//        locationTabs.setSelectedTab(phrase);
+//        HorizontalLayout display = new HorizontalLayout(locationTabs);
+//        display.addClassName("location-navbar");
+//        return display;
+//    }
 
     private void saveNew(PhaseForm.SaveEvent e){
         String name = e.getPhases().getName();
@@ -184,8 +183,14 @@ public class PhaseView extends VerticalLayout {
 
         resetFilterButton.addClassName("custom-reset-button");
 
-        HorizontalLayout horizontalLayout = new HorizontalLayout(addPhrase, filterText, stateComboBox, cityComboBox, resetFilterButton);
+        HorizontalLayout layout = new HorizontalLayout();
+        layout.add(resetFilterButton, addPhrase);
+        layout.setJustifyContentMode(JustifyContentMode.END);
+
+        HorizontalLayout horizontalLayout = new HorizontalLayout(filterText, stateComboBox, cityComboBox, layout);
+        horizontalLayout.setWidthFull();
         horizontalLayout.addClassName("buttons-layout");
+        horizontalLayout.setFlexGrow(2, layout);
 
         return horizontalLayout;
     }

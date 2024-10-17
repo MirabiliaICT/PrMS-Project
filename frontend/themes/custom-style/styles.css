@@ -129,5 +129,18 @@ vaadin-button.custom-reset-button{
 }
 
 .buttons-layout{
+    padding: 15px 15px 0 15px;
+}
+
+.location-tabs{
+    background: #162967;
+    width: 100%;
+}
+
+.location-navbar{
+    background-color: #162967;
+    width: 120%;
+    margin-top:-20px;
+    margin-left:-20px;
     padding: 10px 0 0 10px;
 }

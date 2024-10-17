@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
+.location-tabs{
+    background: #162967;
+    width: 100%;
+}
 
 .location-navbar{
     background-color: #162967;

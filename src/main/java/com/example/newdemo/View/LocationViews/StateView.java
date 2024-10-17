@@ -64,24 +64,24 @@ public class StateView extends VerticalLayout {
         newStateDialog.getFooter().add(newStateForm.buttonLayout());
         newStateDialog.add(newStateForm);
 
-        Tab state = new Tab(new RouterLink("State", StateView.class));
-        Tab city = new Tab(new RouterLink("City", CityView.class));
-        Tab phase = new Tab(new RouterLink("Phase", PhaseView.class));
+//        Tab state = new Tab(new RouterLink("State", StateView.class));
+//        Tab city = new Tab(new RouterLink("City", CityView.class));
+//        Tab phase = new Tab(new RouterLink("Phase", PhaseView.class));
+//
+//        state.addClassName("location-items");
+//        city.addClassName("location-items");
+//        phase.addClassName("location-items");
+//
+//
+//        Tabs locationTabs = new Tabs(state, city, phase);
+//        locationTabs.addClassName("location-tabs");
+//
+//        locationTabs.setSelectedTab(state);
+//        HorizontalLayout display = new HorizontalLayout(locationTabs);
+//        display.addClassName("location-navbar");
+//        getToolbar();
 
-        state.addClassName("location-items");
-        city.addClassName("location-items");
-        phase.addClassName("location-items");
-
-
-        Tabs locationTabs = new Tabs(state, city, phase);
-        locationTabs.addClassName("location-tabs");
-
-        locationTabs.setSelectedTab(state);
-        HorizontalLayout display = new HorizontalLayout(locationTabs);
-        display.addClassName("location-navbar");
-        getToolbar();
-
-        add(display, getToolbar(), stateGrid);
+        add(getToolbar(), stateGrid);
         updateList();
     }
 

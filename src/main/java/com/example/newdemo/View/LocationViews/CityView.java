@@ -74,25 +74,25 @@ public class CityView extends VerticalLayout {
         newFormDialog.getFooter().add(newForm.buttonLayout());
         newFormDialog.add(newForm);
 
-        Tab state = new Tab(new RouterLink("State", StateView.class));
-        Tab city = new Tab(new RouterLink("City", CityView.class));
-        Tab phrase = new Tab(new RouterLink("Phase", PhaseView.class));
+//        Tab state = new Tab(new RouterLink("State", StateView.class));
+//        Tab city = new Tab(new RouterLink("City", CityView.class));
+//        Tab phrase = new Tab(new RouterLink("Phase", PhaseView.class));
 
-        state.addClassName("location-items");
-        city.addClassName("location-items");
-        phrase.addClassName("location-items");
+//        state.addClassName("location-items");
+//        city.addClassName("location-items");
+//        phrase.addClassName("location-items");
 
-        Tabs locationTabs = new Tabs(state, city, phrase);
-        locationTabs.addClassName("location-tabs");
+//        Tabs locationTabs = new Tabs(state, city, phrase);
+//        locationTabs.addClassName("location-tabs");
 
-        locationTabs.setSelectedTab(city);
-        HorizontalLayout display = new HorizontalLayout(locationTabs);
-        display.addClassName("location-navbar");
+//        locationTabs.setSelectedTab(city);
+//        HorizontalLayout display = new HorizontalLayout(locationTabs);
+//        display.addClassName("location-navbar");
 
         setSizeFull();
         configureGrid();
         getToolbar();
-        add(display, getToolbar(), cityGrid);
+        add(getToolbar(), cityGrid);
         updateList();
     }
 
