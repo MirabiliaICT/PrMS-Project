@@ -162,25 +162,25 @@ public class CityView extends VerticalLayout {
     }
 
     private void saveEdit(CityForm.SaveEvent e) {
-        String name = e.getCity().getName();
-        String id = e.getCity().getCityId();
-
-        boolean nameChanged = !name.equals(originalCity.getName());
-        boolean cityIdChanged = !id.equals(originalCity.getCityId());
-
-        Optional<City> cityName = cityRepository.findByName(name);
-        Optional<City> cityId = cityRepository.findByCityId(id);
-
-        if (nameChanged && cityName.isPresent()) {
-            Notification notification = Notification.show("City already exists", 1500, Notification.Position.MIDDLE);
-            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if (cityIdChanged && cityId.isPresent()) {
-            Notification notification = Notification.show("City ID already exists", 1500, Notification.Position.MIDDLE);
-            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else {
+//        String name = e.getCity().getName();
+//        String id = e.getCity().getCityId();
+//
+//        boolean nameChanged = !name.equals(originalCity.getName());
+//        boolean cityIdChanged = !id.equals(originalCity.getCityId());
+//
+//        Optional<City> cityName = cityRepository.findByName(name);
+//        Optional<City> cityId = cityRepository.findByCityId(id);
+//
+//        if (nameChanged && cityName.isPresent()) {
+//            Notification notification = Notification.show("City already exists", 1500, Notification.Position.MIDDLE);
+//            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+//        } else if (cityIdChanged && cityId.isPresent()) {
+//            Notification notification = Notification.show("City ID already exists", 1500, Notification.Position.MIDDLE);
+//            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+//        } else {
             cityService.saveCity(e.getCity());
             closeEdit();
-        }
+//        }
     }
 
     private void deleteEdit(CityForm.DeleteEvent event){
@@ -245,7 +245,7 @@ public class CityView extends VerticalLayout {
 
             resetFilterButton.addClassName("custom-reset-button");
 
-            HorizontalLayout horizontalLayout = new HorizontalLayout(addCity, filterText, stateComboBox, resetFilterButton);
+            HorizontalLayout horizontalLayout = new HorizontalLayout(filterText, stateComboBox, resetFilterButton, addCity);
             horizontalLayout.addClassName("buttons-layout");
 
             return horizontalLayout;

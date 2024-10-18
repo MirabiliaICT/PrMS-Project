@@ -160,24 +160,24 @@ public class StateView extends VerticalLayout {
     }
 
     private void saveEdit(StateForm.SaveEvent e) {
-        String name = e.getState().getName();
-        String id = e.getState().getStateId();
+//        String name = e.getState().getName();
+//        String id = e.getState().getStateId();
+//
+//        boolean nameChanged = !name.equals(originalState.getName());
+//        boolean stateIdChanged = !id.equals(originalState.getStateId());
+//
+//        Optional<State> stateName = stateRepository.findByName(name);
+//        Optional<State> stateId = stateRepository.findByStateId(id);
 
-        boolean nameChanged = !name.equals(originalState.getName());
-        boolean stateIdChanged = !id.equals(originalState.getStateId());
-
-        Optional<State> stateName = stateRepository.findByName(name);
-        Optional<State> stateId = stateRepository.findByStateId(id);
-
-        if (nameChanged && stateName.isPresent()) {
-            Notification.show("State already exists", 3000, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if (stateIdChanged && stateId.isPresent()) {
-            Notification.show("State Id already exists", 3000, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else {
+//        if (nameChanged && stateName.isPresent()) {
+//            Notification.show("State already exists", 3000, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
+//        } else if (stateIdChanged && stateId.isPresent()) {
+//            Notification.show("State Id already exists", 3000, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
+//        } else {
             service.saveState(e.getState());
             updateList();
             closeEdit();
-        }
+//        }
     }
 
     private void closeEdit() {

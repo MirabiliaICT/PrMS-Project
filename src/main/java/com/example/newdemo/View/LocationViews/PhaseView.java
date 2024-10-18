@@ -96,22 +96,6 @@ public class PhaseView extends VerticalLayout {
         updateList();
     }
 
-//    private static HorizontalLayout getHorizontalLayout() {
-//        Tab state = new Tab(new RouterLink("State", StateView.class));
-//        Tab city = new Tab(new RouterLink("City", CityView.class));
-//        Tab phrase = new Tab(new RouterLink("Phase", PhaseView.class));
-//
-
-//
-//        Tabs locationTabs = new Tabs(state, city, phrase);
-//        locationTabs.addClassName("location-tabs");
-//
-//        locationTabs.setSelectedTab(phrase);
-//        HorizontalLayout display = new HorizontalLayout(locationTabs);
-//        display.addClassName("location-navbar");
-//        return display;
-//    }
-
     private void saveNew(PhaseForm.SaveEvent e){
         String name = e.getPhases().getName();
         String id = e.getPhases().getPhaseId();
@@ -290,24 +274,24 @@ public class PhaseView extends VerticalLayout {
     }
 
     private void saveEdit(PhaseForm.SaveEvent e) {
-        String name = e.getPhases().getName();
-        String id = e.getPhases().getPhaseId();
-
-        boolean nameChanged = !name.equals(originalPhase.getName());
-        boolean phraseIdChanged = !id.equals(originalPhase.getPhaseId());
-
-        Optional<Phase> phraseName = phraseRepository.findByName(name);
-        Optional<Phase> phraseId = phraseRepository.findByPhaseId(id);
-
-        if (nameChanged && phraseName.isPresent()) {
-            Notification.show("Phase already exist", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if (phraseIdChanged && phraseId.isPresent()) {
-            Notification.show("Phase Id already exist", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else {
+//        String name = e.getPhases().getName();
+//        String id = e.getPhases().getPhaseId();
+//
+//        boolean nameChanged = !name.equals(originalPhase.getName());
+//        boolean phraseIdChanged = !id.equals(originalPhase.getPhaseId());
+//
+//        Optional<Phase> phraseName = phraseRepository.findByName(name);
+//        Optional<Phase> phraseId = phraseRepository.findByPhaseId(id);
+//
+//        if (nameChanged && phraseName.isPresent()) {
+//            Notification.show("Phase already exist", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
+//        } else if (phraseIdChanged && phraseId.isPresent()) {
+//            Notification.show("Phase Id already exist", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
+//        } else {
             service.savePhases(e.getPhases());
             updateList();
             closeEdit();
-        }
+//        }
     }
 
     private void deleteEdit(PhaseForm.DeleteEvent e){
