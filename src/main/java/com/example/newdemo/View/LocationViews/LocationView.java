@@ -1,5 +1,8 @@
 package com.example.newdemo.View.LocationViews;
 
+import com.example.newdemo.Repository.CityRepository;
+import com.example.newdemo.Repository.PhaseRepository;
+import com.example.newdemo.Repository.StateRepository;
 import com.example.newdemo.Service.CityService;
 import com.example.newdemo.Service.PhaseService;
 import com.example.newdemo.Service.StateService;
@@ -21,11 +24,22 @@ public class LocationView extends VerticalLayout {
     private final CityService cityService;
     private final PhaseService phaseService;
 
+    private final StateRepository stateRepository;
+
+    private final CityRepository cityRepository;
+
+    private final PhaseRepository phaseRepository;
+
+
+
     @Autowired
-    public LocationView(StateService stateService, CityService cityService, PhaseService phaseService) {
+    public LocationView(StateService stateService, CityService cityService, PhaseService phaseService, StateRepository stateRepository, CityRepository cityRepository, PhaseRepository phaseRepository) {
         this.stateService = stateService;
         this.cityService = cityService;
         this.phaseService = phaseService;
+        this.stateRepository = stateRepository;
+        this.cityRepository = cityRepository;
+        this.phaseRepository = phaseRepository;
 
         Tab stateTab = new Tab("State");
         Tab cityTab = new Tab("City");
@@ -76,11 +90,11 @@ public class LocationView extends VerticalLayout {
         content.removeAll();
 
         if ("State".equals(selectedTab.getLabel())) {
-            content.add(new StateView(stateService));
+            content.add(new StateView(stateService, stateRepository, cityService));
         } else if ("City".equals(selectedTab.getLabel())) {
-            content.add(new CityView(cityService, stateService));
+            content.add(new CityView(cityService, stateService, cityRepository));
         } else if ("Phase".equals(selectedTab.getLabel())) {
-            content.add(new PhaseView(stateService, cityService, phaseService));
+            content.add(new PhaseView(stateService, cityService, phaseService, phaseRepository));
         }
     }
 }

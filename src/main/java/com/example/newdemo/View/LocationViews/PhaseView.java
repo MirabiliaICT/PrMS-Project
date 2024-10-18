@@ -18,6 +18,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -56,10 +57,11 @@ public class PhaseView extends VerticalLayout {
     PhaseRepository phraseRepository;
 
     @Autowired
-    public PhaseView(StateService stateService, CityService cityService, PhaseService service){
+    public PhaseView(StateService stateService, CityService cityService, PhaseService service, PhaseRepository phaseRepository){
         this.stateService = stateService;
         this.cityService =  cityService;
         this.service = service;
+        this.phraseRepository = phaseRepository;
 
         addClassName("phase-view");
 
@@ -118,14 +120,14 @@ public class PhaseView extends VerticalLayout {
         Optional<Phase> phaseId = phraseRepository.findByPhaseId(id);
 
         if (name.isBlank() || id.isBlank()) {
-            Notification.show("All fields are required", 1500, Notification.Position.BOTTOM_START);
+            Notification.show("All fields are required", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else {
             if (phaseName.isPresent() && phaseId.isPresent()) {
-                Notification.show("Phase and Phase Id already exist", 1500, Notification.Position.BOTTOM_START);
+                Notification.show("Phase and Phase Id already exist", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
             } else if (phaseName.isPresent()) {
-                Notification.show("Phase already exist", 1500, Notification.Position.BOTTOM_START);
+                Notification.show("Phase already exist", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
             } else if (phaseId.isPresent()) {
-                Notification.show("Phase Id already exist", 1500, Notification.Position.BOTTOM_START);
+                Notification.show("Phase Id already exist", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
             } else {
                 service.savePhases(e.getPhases());
                 closeNew();
@@ -298,9 +300,9 @@ public class PhaseView extends VerticalLayout {
         Optional<Phase> phraseId = phraseRepository.findByPhaseId(id);
 
         if (nameChanged && phraseName.isPresent()) {
-            Notification.show("Phrase already exist", 1500, Notification.Position.BOTTOM_START);
+            Notification.show("Phase already exist", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (phraseIdChanged && phraseId.isPresent()) {
-            Notification.show("Phrase Id already exist", 1500, Notification.Position.BOTTOM_START);
+            Notification.show("Phase Id already exist", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else {
             service.savePhases(e.getPhases());
             updateList();

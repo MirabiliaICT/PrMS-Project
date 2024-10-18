@@ -2,6 +2,8 @@ package com.example.newdemo.Forms;
 
 import com.example.newdemo.Entity.City;
 import com.example.newdemo.Entity.State;
+import com.example.newdemo.Service.CityService;
+import com.example.newdemo.Service.PhaseService;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -11,6 +13,8 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -34,6 +38,8 @@ public class CityForm extends FormLayout {
     public Button delete = new Button("Delete");
 
     Binder<City> cityBinder = new Binder<>(City.class);
+
+    PhaseService phaseService;
 
     public CityForm(List<State> states){
         state.setItems(states);

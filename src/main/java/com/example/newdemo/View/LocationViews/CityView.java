@@ -16,6 +16,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -50,9 +51,11 @@ public class CityView extends VerticalLayout {
     CityRepository cityRepository;
 
     @Autowired
-    public CityView(CityService cityService, StateService stateService){
+    public CityView(CityService cityService, StateService stateService, CityRepository cityRepository){
         this.cityService = cityService;
         this.stateService = stateService;
+        this.cityRepository = cityRepository;
+
         addClassName("state-view");
 
         cityForm = new CityForm(stateService.getAllStates());
@@ -106,26 +109,29 @@ public class CityView extends VerticalLayout {
         updateList();
     }
 
-    private void saveNew(CityForm.SaveEvent event){
-
+    private void saveNew(CityForm.SaveEvent event) {
         String name = event.getCity().getName();
         String id = event.getCity().getCityId();
 
         Optional<City> cityName = cityRepository.findByName(name);
         Optional<City> cityId = cityRepository.findByCityId(id);
 
-        if(name.isBlank() || id.isBlank()){
-            Notification.show("All fields are required", 1500, Notification.Position.BOTTOM_START);
-        } else{
+        if (name.isBlank() || id.isBlank()) {
+            Notification notification = Notification.show("All fields are required", 1500, Notification.Position.BOTTOM_START);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else {
             if (cityName.isPresent() && cityId.isPresent()) {
-                Notification.show("City and City ID already exist", 1500, Notification.Position.BOTTOM_START);
+                Notification notification = Notification.show("City and City ID already exist", 1500, Notification.Position.BOTTOM_START);
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
             } else if (cityName.isPresent()) {
-                Notification.show("City already exists", 1500, Notification.Position.BOTTOM_START);
+                Notification notification = Notification.show("City already exists", 1500, Notification.Position.BOTTOM_START);
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
             } else if (cityId.isPresent()) {
-                Notification.show("City ID already exists", 1500, Notification.Position.BOTTOM_START);
-            } else{
+                Notification notification = Notification.show("City ID already exists", 1500, Notification.Position.BOTTOM_START);
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            } else {
                 cityService.saveCity(event.getCity());
-              closeNew();
+                closeNew();
             }
         }
     }
@@ -155,7 +161,7 @@ public class CityView extends VerticalLayout {
         }
     }
 
-    private void saveEdit(CityForm.SaveEvent e){
+    private void saveEdit(CityForm.SaveEvent e) {
         String name = e.getCity().getName();
         String id = e.getCity().getCityId();
 
@@ -165,10 +171,12 @@ public class CityView extends VerticalLayout {
         Optional<City> cityName = cityRepository.findByName(name);
         Optional<City> cityId = cityRepository.findByCityId(id);
 
-        if(nameChanged && cityName.isPresent()){
-            Notification.show("City already exist", 1500, Notification.Position.BOTTOM_START);
-        } else if(cityIdChanged && cityId.isPresent() ){
-            Notification.show("City Id already exist", 1500, Notification.Position.BOTTOM_START);
+        if (nameChanged && cityName.isPresent()) {
+            Notification notification = Notification.show("City already exists", 1500, Notification.Position.MIDDLE);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else if (cityIdChanged && cityId.isPresent()) {
+            Notification notification = Notification.show("City ID already exists", 1500, Notification.Position.MIDDLE);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else {
             cityService.saveCity(e.getCity());
             closeEdit();
@@ -176,8 +184,15 @@ public class CityView extends VerticalLayout {
     }
 
     private void deleteEdit(CityForm.DeleteEvent event){
-        cityService.deleteCity(event.getCity());
-        closeEdit();
+        City cityToDelete = event.getCity();
+
+        if (cityService.hasPhases(cityToDelete)) {
+            Notification notification = Notification.show("Cannot delete city. It has associated phases.", 1500, Notification.Position.MIDDLE);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else {
+            cityService.deleteCity(cityToDelete);
+            closeEdit();
+        }
     }
 
     private void closeEdit(){

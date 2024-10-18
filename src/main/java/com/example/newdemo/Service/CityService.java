@@ -1,10 +1,12 @@
 package com.example.newdemo.Service;
 
 
+import com.example.newdemo.Entity.Phase;
 import com.example.newdemo.Entity.State;
 import com.example.newdemo.Entity.Users;
 import com.example.newdemo.Repository.CityRepository;
 import com.example.newdemo.Entity.City;
+import com.example.newdemo.Repository.PhaseRepository;
 import com.example.newdemo.Repository.PropertyRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +21,12 @@ public class CityService {
     CityRepository cityRepository;
     PropertyRepository propertyRepository;
 
-    public CityService(CityRepository cityRepository, PropertyRepository propertyRepository){
+    PhaseRepository phaseRepository;
+
+    public CityService(CityRepository cityRepository, PropertyRepository propertyRepository, PhaseRepository phaseRepository) {
         this.cityRepository = cityRepository;
         this.propertyRepository = propertyRepository;
+        this.phaseRepository = phaseRepository;
     }
 
     public void saveCity(City city){
@@ -48,6 +53,11 @@ public class CityService {
         List<City> cityList = cityRepository.findAll();
         return new HashSet<>(cityList);
     }
+
+    public boolean hasPhases(City city) {
+        return phaseRepository.countByCity(city) > 0; // Example logic
+    }
+
 
     public Set<City> getAllCitiesByState(State state){
         return cityRepository.findByState(state);

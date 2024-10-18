@@ -2,6 +2,8 @@ package com.example.newdemo.View.LocationViews;
 
 import com.example.newdemo.Forms.StateForm;
 import com.example.newdemo.Repository.StateRepository;
+import com.example.newdemo.Service.CityService;
+import com.example.newdemo.Service.PhaseService;
 import com.example.newdemo.Service.StateService;
 import com.example.newdemo.Entity.State;
 import com.example.newdemo.View.MainView;
@@ -12,15 +14,12 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.theme.Theme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Comparator;
@@ -34,18 +33,22 @@ public class StateView extends VerticalLayout {
 
     Grid<State> stateGrid = new Grid<>(State.class);
     TextField filterText = new TextField();
-    StateForm editStateForm  = new StateForm();
+    StateForm editStateForm;
+    StateForm newStateForm;
     StateService service;
     State originalState;
-    StateForm newStateForm = new StateForm();
     Dialog editDialog = new Dialog();
     Dialog newStateDialog = new Dialog();
-    @Autowired
-    StateRepository stateRepository;
+    private final StateRepository stateRepository;
 
     @Autowired
-    public StateView(StateService service) {
+    public StateView(StateService service, StateRepository stateRepository, CityService cityService) {
         this.service = service;
+        this.stateRepository = stateRepository;
+
+        // Instantiate StateForm with CityService and PhaseService
+        editStateForm = new StateForm(cityService);
+        newStateForm = new StateForm(cityService);
 
         setSizeFull();
         configureGrid();
@@ -59,51 +62,34 @@ public class StateView extends VerticalLayout {
         newStateForm.addCloseListener(e -> closeNew());
 
         newStateDialog.setHeaderTitle("New State");
-        newStateDialog.addClassName("custom-dialog");;
+        newStateDialog.addClassName("custom-dialog");
 
         newStateDialog.getFooter().add(newStateForm.buttonLayout());
         newStateDialog.add(newStateForm);
-
-//        Tab state = new Tab(new RouterLink("State", StateView.class));
-//        Tab city = new Tab(new RouterLink("City", CityView.class));
-//        Tab phase = new Tab(new RouterLink("Phase", PhaseView.class));
-//
-//        state.addClassName("location-items");
-//        city.addClassName("location-items");
-//        phase.addClassName("location-items");
-//
-//
-//        Tabs locationTabs = new Tabs(state, city, phase);
-//        locationTabs.addClassName("location-tabs");
-//
-//        locationTabs.setSelectedTab(state);
-//        HorizontalLayout display = new HorizontalLayout(locationTabs);
-//        display.addClassName("location-navbar");
-//        getToolbar();
 
         add(getToolbar(), stateGrid);
         updateList();
     }
 
     private void updateList() {
-       if(filterText.isEmpty()) {
-           List<State> states = service.getAllStatesByFilter(filterText.getEmptyValue());
+        if (filterText.isEmpty()) {
+            List<State> states = service.getAllStatesByFilter(filterText.getEmptyValue());
 
-           List<State> sortedStates = states.stream()
-                   .sorted(Comparator.comparing(State::getName))
-                   .collect(Collectors.toList());
+            List<State> sortedStates = states.stream()
+                    .sorted(Comparator.comparing(State::getName))
+                    .collect(Collectors.toList());
 
-           stateGrid.setItems(sortedStates);
-           stateGrid.setColumns("name", "stateId");
-       } else{
-           List<State> states = service.getAllStatesByFilter(filterText.getValue());
+            stateGrid.setItems(sortedStates);
+            stateGrid.setColumns("name", "stateId");
+        } else {
+            List<State> states = service.getAllStatesByFilter(filterText.getValue());
 
-           List<State> sortedStates = states.stream()
-                   .sorted(Comparator.comparing(State::getName))
-                   .toList();
+            List<State> sortedStates = states.stream()
+                    .sorted(Comparator.comparing(State::getName))
+                    .toList();
 
-           stateGrid.setItems(sortedStates);
-       }
+            stateGrid.setItems(sortedStates);
+        }
     }
 
     private void saveNew(StateForm.SaveEvent event) {
@@ -113,30 +99,29 @@ public class StateView extends VerticalLayout {
         Optional<State> stateName = stateRepository.findByName(name);
         Optional<State> stateId = stateRepository.findByStateId(id);
 
-        if(name.isBlank() || id.isBlank()){
-            Notification.show("All fields are required", 1500, Notification.Position.BOTTOM_START);
-        } else{
+        if (name.isBlank() || id.isBlank()) {
+            Notification.show("All fields are required", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else {
             if (stateName.isPresent() && stateId.isPresent()) {
-                Notification.show("State and State ID already exist", 1500, Notification.Position.BOTTOM_START);
+                Notification.show("State and State ID already exist", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
             } else if (stateName.isPresent()) {
-                Notification.show("State already exists", 1500, Notification.Position.BOTTOM_START);
+                Notification.show("State already exists", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
             } else if (stateId.isPresent()) {
-                Notification.show("State ID already exists", 1500, Notification.Position.BOTTOM_START);
-            }
-            else {
+                Notification.show("State ID already exists", 1500, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            } else {
                 service.saveState(event.getState());
                 closeNew();
             }
         }
     }
-    private void closeNew(){
+
+    private void closeNew() {
         newStateForm.name.clear();
         newStateForm.stateId.clear();
         newStateForm.setState(new State());
         newStateDialog.close();
         updateList();
     }
-
 
     private void configureGrid() {
         List<State> states = service.getAllStatesByFilter(filterText.getEmptyValue());
@@ -149,10 +134,8 @@ public class StateView extends VerticalLayout {
         stateGrid.addClassName("custom-grid");
     }
 
-
-
-    private void edit(State state){
-        if(state != null){
+    private void edit(State state) {
+        if (state != null) {
             editStateForm.setState(state);
 
             if (originalState == null) {
@@ -167,11 +150,11 @@ public class StateView extends VerticalLayout {
             editStateForm.addCloseListener(e -> closeEdit());
 
             editDialog.setHeaderTitle("State");
-            editDialog.addClassName("custom-dialog");;
+            editDialog.addClassName("custom-dialog");
             editDialog.getFooter().add(editStateForm.buttonLayout());
             editDialog.add(editStateForm);
             editDialog.open();
-        }  else{
+        } else {
             closeEdit();
         }
     }
@@ -186,23 +169,22 @@ public class StateView extends VerticalLayout {
         Optional<State> stateName = stateRepository.findByName(name);
         Optional<State> stateId = stateRepository.findByStateId(id);
 
-        if(nameChanged && stateName.isPresent()) {
-            Notification.show("State already exist", 3000, Notification.Position.BOTTOM_START);
-        }
-        else if(stateIdChanged && stateId.isPresent()) {
-            Notification.show("State Id already exist", 3000, Notification.Position.BOTTOM_START);
-        } else{
+        if (nameChanged && stateName.isPresent()) {
+            Notification.show("State already exists", 3000, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else if (stateIdChanged && stateId.isPresent()) {
+            Notification.show("State Id already exists", 3000, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
+        } else {
             service.saveState(e.getState());
             updateList();
             closeEdit();
         }
     }
 
-    private void closeEdit(){
-        editDialog .close();
+    private void closeEdit() {
+        editDialog.close();
     }
 
-    private void deleteEdit(StateForm.DeleteEvent event){
+    private void deleteEdit(StateForm.DeleteEvent event) {
         service.deleteState(event.getState());
         updateList();
         closeEdit();
@@ -220,12 +202,9 @@ public class StateView extends VerticalLayout {
         addState.setPrefixComponent(new Icon(VaadinIcon.PLUS));
         addState.addClassName("custom-add-button");
 
-        HorizontalLayout horizontalLayout =new HorizontalLayout(addState, filterText);
+        HorizontalLayout horizontalLayout = new HorizontalLayout(addState, filterText);
         horizontalLayout.addClassName("buttons-layout");
 
-        return horizontalLayout ;
-
+        return horizontalLayout;
     }
-
-
 }

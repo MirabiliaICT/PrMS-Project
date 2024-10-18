@@ -27,4 +27,6 @@ public interface PhaseRepository extends JpaRepository<Phase, Long> {
 
     @Query("SELECT p FROM Phase p WHERE p.city = :city")
     List<Phase> findByCity(@Param("city") City city);
+
+    long countByCity(City city);
 }
