@@ -130,6 +130,22 @@ vaadin-button.custom-reset-button{
 
 .buttons-layout{
     padding: 15px 15px 0 15px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.btn-end{
+    justify-content: flex-end;
+    flex-grow:2;
+
+}
+
+@media (max-width: 1100px){
+
+        .btn-end{
+               justify-content: left;
+               flex-grow: 0;
+               }
 }
 
 .location-tabs{
