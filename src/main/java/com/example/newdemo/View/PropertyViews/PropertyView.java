@@ -56,10 +56,12 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
     ComboBox<City> city = new ComboBox<>("City");
     ComboBox<Phase> phrase = new ComboBox<>("Phrase");
     ComboBox<Property.PropertyType> typeOfProperty = new ComboBox<>("Type");
-    Button resetFilterButton = new Button("ResetFilters");
     byte[] resizedImageData;
     createNewUserForm newUserDialog = new createNewUserForm();
     public Dialog createNewUser = new Dialog();
+
+    Icon reloadIcon = VaadinIcon.REFRESH.create();
+    Button resetFilterButton = new Button(reloadIcon);
 
     @Autowired
     PropertyRepository propertyRepository;
@@ -158,7 +160,7 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
 
     private HorizontalLayout getToolbar() {
         addProperty = new Button("Add Property");
-        addProperty.addClassName("add-property");
+        addProperty.addClassName("custom-add-button");
         addProperty.setPrefixComponent(new Icon(VaadinIcon.PLUS));
 
         addProperty.addClickListener(clickEvent -> {
@@ -216,10 +218,10 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
             updateList();
         });
 
-        resetFilterButton.addClassName("reset-filters");
+        resetFilterButton.addClassName("custom-reset-button");
 
-        var toolbar = new HorizontalLayout(addProperty, state, city, phrase, typeOfProperty, status, resetFilterButton);
-        toolbar.addClassName("PropertyToolBar");
+        var toolbar = new HorizontalLayout(state, city, phrase, typeOfProperty, status, resetFilterButton, addProperty);
+        toolbar.addClassName("buttons-layout");
         return toolbar;
     }
 
