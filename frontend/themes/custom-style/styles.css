@@ -132,6 +132,7 @@ vaadin-button.custom-reset-button{
     padding: 15px 15px 0 15px;
     display: flex;
     flex-wrap: wrap;
+    align-items: baseline;
 }
 
 .btn-end{

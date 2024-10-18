@@ -171,12 +171,13 @@ public class PhaseView extends VerticalLayout {
 
         HorizontalLayout layout = new HorizontalLayout();
         layout.add(resetFilterButton, addPhrase);
-        layout.setJustifyContentMode(JustifyContentMode.END);
+//        layout.setJustifyContentMode(JustifyContentMode.END);
+        layout.addClassName("btn-end");
 
         HorizontalLayout horizontalLayout = new HorizontalLayout(filterText, stateComboBox, cityComboBox, layout);
         horizontalLayout.setWidthFull();
         horizontalLayout.addClassName("buttons-layout");
-        horizontalLayout.setFlexGrow(2, layout);
+//        horizontalLayout.setFlexGrow(2, layout);
 
         return horizontalLayout;
     }
