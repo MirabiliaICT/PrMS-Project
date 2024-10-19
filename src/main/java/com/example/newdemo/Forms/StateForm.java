@@ -8,8 +8,10 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -83,9 +85,33 @@ public class StateForm extends FormLayout {
         if (hasCities) {
             Notification.show("Cannot delete the state as it has associated cities.", 3000, Notification.Position.MIDDLE).addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else {
-            fireEvent(new StateForm.DeleteEvent(this, state));
+            deleteConfirmationDialog(state);
         }
     }
+
+    private void deleteConfirmationDialog(State state) {
+        Dialog confirmationDialog = new Dialog();
+        confirmationDialog.add(new Span("Are you sure you want to delete this state?"));
+        Button confirmButton = new Button("Confirm", event -> {
+            fireEvent(new StateForm.DeleteEvent(this, state));
+            confirmationDialog.close();
+        });
+        confirmButton.addClassName("custom-confirm-button");
+
+        Button cancelButton = new Button("Cancel", event -> confirmationDialog.close());
+        cancelButton.addClassName("custom-cancel-button");
+
+        HorizontalLayout dialogButtons = new HorizontalLayout(confirmButton, cancelButton);
+        dialogButtons.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
+
+
+        confirmationDialog.add(dialogButtons);
+        confirmationDialog.setCloseOnOutsideClick(false);
+        confirmationDialog.setCloseOnEsc(true);
+
+        confirmationDialog.open();
+    }
+
 
     public void setState(State state) {
         stateBinder.setBean(state);

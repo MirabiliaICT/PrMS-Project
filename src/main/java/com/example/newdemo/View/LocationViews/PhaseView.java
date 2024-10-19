@@ -296,8 +296,25 @@ public class PhaseView extends VerticalLayout {
     }
 
     private void deleteEdit(PhaseForm.DeleteEvent e){
-        service.deletePhases(e.getPhases());
-        closeEdit();
+
+        Phase phaseToDelete = e.getPhases();
+        Dialog confirmationDialog = new Dialog();
+//            confirmationDialog.setHeaderTitle("Confirm Delete");
+        confirmationDialog.add("Are you sure you want to delete this phase?");
+
+        Button confirmButton = new Button("Delete", event -> {
+            service.deletePhases(phaseToDelete);;
+            confirmationDialog.close();
+            closeEdit();
+        });
+        confirmButton.addClassName("custom-confirm-button");
+
+        Button cancelButton = new Button("Cancel", event -> confirmationDialog.close());
+
+        HorizontalLayout buttonsLayout = new HorizontalLayout(confirmButton, cancelButton);
+        confirmationDialog.getFooter().add(buttonsLayout);
+
+        confirmationDialog.open();
     }
 
     private void closeEdit(){

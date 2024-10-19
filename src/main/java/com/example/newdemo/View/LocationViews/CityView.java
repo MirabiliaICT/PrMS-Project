@@ -9,6 +9,7 @@ import com.example.newdemo.Service.StateService;
 import com.example.newdemo.Entity.City;
 import com.example.newdemo.View.MainView;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -183,17 +184,33 @@ public class CityView extends VerticalLayout {
 //        }
     }
 
-    private void deleteEdit(CityForm.DeleteEvent event){
+    private void deleteEdit(CityForm.DeleteEvent event) {
         City cityToDelete = event.getCity();
 
         if (cityService.hasPhases(cityToDelete)) {
             Notification notification = Notification.show("Cannot delete city. It has associated phases.", 1500, Notification.Position.MIDDLE);
             notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else {
-            cityService.deleteCity(cityToDelete);
-            closeEdit();
+            Dialog confirmationDialog = new Dialog();
+//            confirmationDialog.setHeaderTitle("Confirm Delete");
+            confirmationDialog.add("Are you sure you want to delete this city?");
+
+            Button confirmButton = new Button("Delete", e -> {
+                cityService.deleteCity(cityToDelete);
+                confirmationDialog.close();
+                closeEdit();
+            });
+            confirmButton.addClassName("custom-confirm-button");
+
+            Button cancelButton = new Button("Cancel", e -> confirmationDialog.close());
+
+            HorizontalLayout buttonsLayout = new HorizontalLayout(confirmButton, cancelButton);
+            confirmationDialog.getFooter().add(buttonsLayout);
+
+            confirmationDialog.open();
         }
     }
+
 
     private void closeEdit(){
         updateList();

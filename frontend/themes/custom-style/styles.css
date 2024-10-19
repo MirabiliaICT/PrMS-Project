@@ -40,7 +40,8 @@ vaadin-button.custom-reset-button{
     color: black;
     font-size: 16px;
     text-align: left;
-    border-bottom: 1px solid black;
+    border-top: 1px solid #a39e9e;
+    border-bottom: 1px solid #a39e9e;
 }
 
 .custom-grid::part(selected-row-cell) {
@@ -58,7 +59,7 @@ vaadin-button.custom-reset-button{
     font-size: 14px;
 }
 
-.custom-save-button{
+.custom-save-button, .custom-confirm-button{
     color: #FFFFFF;
     background-color: #162868;
 }
