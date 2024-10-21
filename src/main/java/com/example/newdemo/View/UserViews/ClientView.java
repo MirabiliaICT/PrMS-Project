@@ -101,10 +101,9 @@ public class ClientView extends VerticalLayout implements RouterLayout {
 
     private HorizontalLayout getToolbar() {
 
-        Icon searchIcon = new Icon(VaadinIcon.SEARCH);
         filterText.setPlaceholder("  Search user");
         filterText.setClearButtonVisible(true);
-        filterText.setPrefixComponent(searchIcon);
+        filterText.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
         filterText.addClassName("search-users");

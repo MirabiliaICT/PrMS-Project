@@ -45,7 +45,7 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
     PropertyService propertyService;
     ImageService imageService;
     UserService userService;
-    PhraseService phraseService;
+    PhaseService phraseService;
     List<byte[]> resizedList = new ArrayList<>();
     PropertyForm propertyForm;
 
@@ -54,12 +54,14 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
     ComboBox<Property.PropertyStatus> status = new ComboBox<>("Status");
     ComboBox<State> state = new ComboBox<>("State");
     ComboBox<City> city = new ComboBox<>("City");
-    ComboBox<Phrases> phrase = new ComboBox<>("Phrase");
+    ComboBox<Phase> phrase = new ComboBox<>("Phrase");
     ComboBox<Property.PropertyType> typeOfProperty = new ComboBox<>("Type");
-    Button resetFilterButton = new Button("ResetFilters");
     byte[] resizedImageData;
     createNewUserForm newUserDialog = new createNewUserForm();
     public Dialog createNewUser = new Dialog();
+
+    Icon reloadIcon = VaadinIcon.REFRESH.create();
+    Button resetFilterButton = new Button(reloadIcon);
 
     @Autowired
     PropertyRepository propertyRepository;
@@ -67,7 +69,7 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
     @Autowired
     public PropertyView(StateService stateService, CityService cityService,
                         PropertyService propertyService, UserService userService, ImageService imageService,
-                        PhraseService phraseService){
+                        PhaseService phraseService){
         this.stateService = stateService;
         this.cityService = cityService;
         this.propertyService = propertyService;
@@ -82,7 +84,7 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
         newUserDialog.create.addClickListener(e -> createButton());
 
         propertyForm = new PropertyForm(stateService.getAllStates(), cityService.getAllCities(),
-                userService.findUserNamesByClientUserRole(), phraseService.getAllPhrases());
+                userService.findUserNamesByClientUserRole(), phraseService.getAllPhases());
 
         status.setItems(Property.PropertyStatus.values());
         typeOfProperty.setItems(Property.PropertyType.values());
@@ -118,13 +120,13 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
         city.setItems(sortedCities);
         city.setItemLabelGenerator(City::getName);
 
-        List<Phrases> phrases = phraseService.getAllPhrases();
-        List<Phrases> sortedPhrases = phrases.stream()
-                    .sorted(Comparator.comparing(Phrases::getName))
+        List<Phase> phrases = phraseService.getAllPhases();
+        List<Phase> sortedPhrases = phrases.stream()
+                    .sorted(Comparator.comparing(Phase::getName))
                     .toList();
 
         phrase.setItems(sortedPhrases);
-        phrase.setItemLabelGenerator(Phrases::getName);
+        phrase.setItemLabelGenerator(Phase::getName);
 
 
         propertyForm.propertyImages.addSucceededListener(event -> {
@@ -158,7 +160,7 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
 
     private HorizontalLayout getToolbar() {
         addProperty = new Button("Add Property");
-        addProperty.addClassName("add-property");
+        addProperty.addClassName("custom-add-button");
         addProperty.setPrefixComponent(new Icon(VaadinIcon.PLUS));
 
         addProperty.addClickListener(clickEvent -> {
@@ -216,10 +218,10 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
             updateList();
         });
 
-        resetFilterButton.addClassName("reset-filters");
+        resetFilterButton.addClassName("custom-reset-button");
 
-        var toolbar = new HorizontalLayout(addProperty, state, city, phrase, typeOfProperty, status, resetFilterButton);
-        toolbar.addClassName("PropertyToolBar");
+        var toolbar = new HorizontalLayout(state, city, phrase, typeOfProperty, status, resetFilterButton, addProperty);
+        toolbar.addClassName("buttons-layout");
         return toolbar;
     }
 
@@ -228,7 +230,7 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
         Property.PropertyType selectedType = typeOfProperty.getValue();
         State selectedState = state.getValue();
         City selectedCity = city.getValue();
-        Phrases selectedPhrase = phrase.getValue();
+        Phase selectedPhrase = phrase.getValue();
 
         List<Property> searchResults = propertyRepository.searchByStatusStateTypeCityAndPhrases(selectedStatus, selectedType,
                 selectedState, selectedCity, selectedPhrase);
@@ -370,9 +372,9 @@ public class PropertyView extends VerticalLayout implements RouterLayout {
     }
 
     private void getPhraseByCity(City city){
-        List<Phrases> phraseByCity = phraseService.getAllPhrasesByCity(city);
+        List<Phase> phraseByCity = phraseService.getAllPhasesByCity(city);
         phrase.setItems(phraseByCity);
-        phrase.setItemLabelGenerator(Phrases::getName);
+        phrase.setItemLabelGenerator(Phase::getName);
     }
 
     private void createButton(){

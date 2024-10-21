@@ -16,7 +16,7 @@
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: 300;
-    color: #1434A4;
+    color: #162967;
     margin-bottom: -10px;
 }
 
@@ -33,7 +33,7 @@ vaadin-integer-field::part(label), vaadin-password-field::part(label), vaadin-ch
      font-family: 'Open Sans', sans-serif;
      font-size: 14px;
      font-weight: 200;
-     color: #1434A4 !important;
+     color: #162967 !important;
 }
 
 vaadin-text-field::part(input-field), vaadin-combo-box::part(input-field), vaadin-email-field::part(input-field),
@@ -41,29 +41,29 @@ vaadin-integer-field::part(input-field), vaadin-password-field::part(input-field
    font-family: 'Open Sans', sans-serif;
    font-size: 14px;
    font-weight: 200;
-   border: solid 0.5px #1434A4 !important;
+   border: solid 0.5px #162967 !important;
    background-color: white;
    height: 35px !important;
 }
 
 vaadin-checkbox::part(checkbox)::after{
-   border: solid 0.5px #1434A4 !important;
+   border: solid 0.5px #162967 !important;
    background-color: white;
-   color: #1434A4 !important;
+   color: #162967 !important;
 }
 
 vaadin-checkbox > label{
    font-family: 'Open Sans', sans-serif;
    font-size: 14px;
    font-weight: 300;
-   color: #1434A4;
+   color: #162967;
 }
 
 vaadin-text-area::part(input-field){
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: 200;
-    border: solid 0.5px #1434A4 !important;
+    border: solid 0.5px #162967 !important;
     background-color: white;
     height: 100px !important;
 }
@@ -71,7 +71,7 @@ vaadin-text-area::part(input-field){
 .save{
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
-    background-color: #1434A4 !important;
+    background-color: #162967 !important;
     color: white !important;
     margin-top:10px;
 }

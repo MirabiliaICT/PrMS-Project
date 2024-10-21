@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
 .sideNavbar {
-   background-color:#1434A4;
+   background-color:#162967;
    padding-left: 15px;
    height: 100%;
    color:white;
    margin-right: 0px;
 }
+
+
 
 .tabs > vaadin-icon{
   text-align: center;
@@ -23,19 +25,19 @@
      font-size: 16px;
      font-weight:300;
      color: white !important;
-     margin-right: 20px;
+     margin: 20px;
 }
 
 .tabs[current]{
     border: solid 0.5px white;
     border-radius: 5px;
-    color:#1434A4 !important;
+    color:#162967 !important;
     background-color: white !important;
     padding-right: -10px;
 }
 
 .tabs[current] > vaadin-icon{
-     color:#1434A4 !important;
+     color:#162967 !important;
 }
 
 

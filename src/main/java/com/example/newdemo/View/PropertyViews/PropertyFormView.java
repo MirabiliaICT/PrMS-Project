@@ -32,7 +32,7 @@ public class PropertyFormView extends VerticalLayout {
     CityService cityService;
     PropertyService propertyService;
     UserService userService;
-    PhraseService phraseService;
+    PhaseService phraseService;
     ImageService imageService;
     PropertyForm propertyForm;
     PropertyView propertyView;
@@ -43,7 +43,7 @@ public class PropertyFormView extends VerticalLayout {
     Button backToProperty = new Button("Back To Property");
     @Autowired
     public PropertyFormView(StateService stateService,  CityService cityService, PropertyService propertyService,
-                            ImageService imageService, UserService userService, PhraseService phraseService){
+                            ImageService imageService, UserService userService, PhaseService phraseService){
         this.stateService = stateService;
         this.cityService = cityService;
         this.propertyService = propertyService;
@@ -62,7 +62,7 @@ public class PropertyFormView extends VerticalLayout {
         propertyView.addProperty.setVisible(false);
 
         propertyForm = new PropertyForm(stateService.getAllStates(), cityService.getAllCities(),
-                userService.findUserNamesByClientUserRole(), phraseService.getAllPhrases());
+                userService.findUserNamesByClientUserRole(), phraseService.getAllPhases());
         propertyForm.setProperty(new Property());
         propertyForm.delete.setVisible(false);
         propertyForm.owners.setVisible(false);
@@ -104,7 +104,7 @@ public class PropertyFormView extends VerticalLayout {
         propertyForm.city.setItemLabelGenerator(City::getName);
 
         propertyForm.phrase.setItems(sortedPhrase());
-        propertyForm.phrase.setItemLabelGenerator(Phrases::getName);
+        propertyForm.phrase.setItemLabelGenerator(Phase::getName);
 
         List<Users> users = userService.findUserNamesByClientUserRole();
         List<Users> sortedNames = users.stream()
@@ -136,7 +136,7 @@ public class PropertyFormView extends VerticalLayout {
         });
 
         propertyForm.phrase.addValueChangeListener(e -> {
-            Phrases selectedPhrase = e.getValue();
+            Phase selectedPhrase = e.getValue();
             System.out.println(selectedPhrase);
         });
 
@@ -214,9 +214,9 @@ public class PropertyFormView extends VerticalLayout {
     }
 
     private void getPhraseByCity(City city){
-        List<Phrases> phraseByCity = phraseService.getAllPhrasesByCity(city);
+        List<Phase> phraseByCity = phraseService.getAllPhasesByCity(city);
         propertyForm.phrase.setItems(phraseByCity);
-        propertyForm.phrase.setItemLabelGenerator(Phrases::getName);
+        propertyForm.phrase.setItemLabelGenerator(Phase::getName);
     }
 
     private List<State> sortedState(){
@@ -233,10 +233,10 @@ public class PropertyFormView extends VerticalLayout {
                 .toList();
     }
 
-    private List<Phrases> sortedPhrase(){
-        List<Phrases> phrases = phraseService.getAllPhrases();
+    private List<Phase> sortedPhrase(){
+        List<Phase> phrases = phraseService.getAllPhases();
         return phrases.stream()
-                .sorted(Comparator.comparing(Phrases::getName))
+                .sorted(Comparator.comparing(Phase::getName))
                 .toList();
     }
 }

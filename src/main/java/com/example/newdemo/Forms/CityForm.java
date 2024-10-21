@@ -2,6 +2,8 @@ package com.example.newdemo.Forms;
 
 import com.example.newdemo.Entity.City;
 import com.example.newdemo.Entity.State;
+import com.example.newdemo.Service.CityService;
+import com.example.newdemo.Service.PhaseService;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -10,7 +12,12 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -27,10 +34,12 @@ public class CityForm extends FormLayout {
     public TextField cityId = new TextField("City Id");
 
     Button save = new Button("Save");
-    Button cancel = new Button("Discharge Changes");
+    Button cancel = new Button("Discard Changes");
     public Button delete = new Button("Delete");
 
     Binder<City> cityBinder = new Binder<>(City.class);
+
+    PhaseService phaseService;
 
     public CityForm(List<State> states){
         state.setItems(states);
@@ -39,17 +48,30 @@ public class CityForm extends FormLayout {
         cityBinder.bindInstanceFields(this);
 
         FormLayout cityFormLayout = new FormLayout(state, name, cityId);
-        cityFormLayout.setResponsiveSteps( new ResponsiveStep("0", 3));
+        cityFormLayout.setResponsiveSteps( new ResponsiveStep("0", 2));
+        cityFormLayout.setSizeFull();
+        cityFormLayout.addClassName("custom-dialog");
+        state.setSizeFull();
+
         add(cityFormLayout);
+
+        VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.setSizeFull();
+        mainLayout.add(cityFormLayout);
+        mainLayout.addClassName("city-main-layout");
+        add(mainLayout);
+        save.addClassName("phase-save");
+
     }
 
     public HorizontalLayout buttonLayout() {
         save.addClickShortcut(Key.ENTER);
         cancel.addClickShortcut(Key.ESCAPE);
 
-        save.addClassName("save-button");
-        delete.addClassName("delete-button");
-        cancel.addClassName("cancel-button");
+        save.addClassName("custom-save-button");
+        delete.addClassName("custom-delete-button");
+        cancel.addClassName("custom-discard-button");
+
 
         save.addClickListener(clickEvent -> validateAndSave());
         delete.addClickListener(clickEvent -> fireEvent(new DeleteEvent(this, cityBinder.getBean())));
@@ -57,7 +79,17 @@ public class CityForm extends FormLayout {
 
         cityBinder.addStatusChangeListener(event -> save.setEnabled(cityBinder.isValid()));
 
-        return new HorizontalLayout(cancel, delete, save);
+        HorizontalLayout layout = new HorizontalLayout();
+        HorizontalLayout cancelWrapper = new HorizontalLayout();
+
+        cancelWrapper.add(cancel);
+
+        layout.add(cancelWrapper, save, delete);
+        layout.setWidthFull();
+        layout.setFlexGrow(2,cancelWrapper);
+        layout.setJustifyContentMode(FlexComponent.JustifyContentMode.START);
+
+        return layout;
     }
 
     private void validateAndSave(){

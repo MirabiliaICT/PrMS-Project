@@ -10,7 +10,6 @@ import lombok.Getter;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Data
 @Entity
@@ -28,7 +27,7 @@ public class Finances {
     private City city;
 
     @ManyToOne
-    private Phrases phrases;
+    private Phase phrases;
 
     @ManyToOne
     private Users owner;
@@ -49,7 +48,7 @@ public class Finances {
 
     public Finances(){}
 
-    public Finances(Long id, State state, City city, Phrases phrases,
+    public Finances(Long id, State state, City city, Phase phrases,
                     Users owner, Property.PropertyType type,
                     double price, String paidBy,
                     LocalDate date, double amountPaid,
@@ -76,7 +75,7 @@ public class Finances {
 
     public void setCity(City city) {this.city = city;}
 
-    public void setPhrases(Phrases phrases) {this.phrases = phrases;}
+    public void setPhrases(Phase phrases) {this.phrases = phrases;}
 
     public void setOwner(Users owner) {
         this.owner = owner;
